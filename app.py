@@ -17,13 +17,18 @@ from email import encoders
 
 
 
-app = Flask(__name__)
-CORS(app)
+# Define the trusted domain
+ALLOWED_ORIGINS = ["https://website-backend-6w0g.onrender.com"]
+
+# Configure CORS to allow only the trusted domain
+CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
 
 # ✅ Register Blueprints
 app.register_blueprint(batch_routes)
 app.register_blueprint(patient_bp)
 app.register_blueprint(json_process_bp)
+
+
 
 # ✅ Connect to MongoDB
 client = MongoClient("mongodb+srv://pavanshankar9000:pavan%409000@project1.gfku5.mongodb.net/?retryWrites=true&w=majority")
@@ -32,12 +37,16 @@ fs = gridfs.GridFS(db)
 submitted_reports_collection = db["submitted_reports"]
 availability_collection = db["availability_status"]  # ✅ New collection for availability status
 
+
 # ✅ Email Credentials (Use App Password for Gmail)
-SENDER_EMAIL = "chanduchandu913303@gmail.com"
+SENDER_EMAIL = "chanduchandu913303@gmail.com"#personal testing  email
 SENDER_PASSWORD = "xwcq vlpd kjeg ewcs"  # App Password for Gmail
+
+
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 RECIPIENT_EMAIL = "pavanshankar9000@gmail.com"  # Change this to your required email
+
 
 @app.route("/upload-pdf", methods=["POST"])
 def upload_pdf():
@@ -95,7 +104,7 @@ def generate_excel():
             return jsonify({"error": "Failed to generate Excel file"}), 500
 
         # ✅ Send Email with the generated file
-        recipient_emails = ["pavanshankar9000@gmail.com", "bunnybunny913303@gmail.com", "kavyar@genepowerx.com"]
+        recipient_emails = ["pavanshankar9000@gmail.com", "bunnybunny913303@gmail.com", "bunnbunn913303@gmail.com"]
         email_sent = send_email_with_attachment(recipient_emails, file_path, filename,selected_patient)
 
         # ✅ Delete the file after sending the email
@@ -272,3 +281,5 @@ def send_email_with_attachment(to_emails, file_path, filename,patient_id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+
