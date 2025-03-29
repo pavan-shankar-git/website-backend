@@ -15,6 +15,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 
+app = Flask(__name__)
 
 
 # Define the trusted domain
